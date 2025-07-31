@@ -1,6 +1,6 @@
 const { connectDB } = require('./config/database');
 const express = require('express');
-const { addUser } = require('./models/user');
+const User = require('./models/user');
 require('dotenv').config();
 
 const app = express();
@@ -9,7 +9,7 @@ app.use(express.json());
 
 
 app.post('/signup', async (req, res) => {
-  const user = await addUser(req.body);
+  const user = await User(req.body);
   user.save();
   res.send("User Added Successfully")
 })
@@ -19,7 +19,7 @@ app.post('/signup', async (req, res) => {
 app.post('/findUserWithEmail', async (req, res) => {
   const email = req.body.email;
 
-  const findByEmail = await addUser.find({ email: email })
+  const findByEmail = await User.find({ email: email })
 
   if (findByEmail.length === 0) {
     res.status(400).send("User not found!")
@@ -31,7 +31,7 @@ app.post('/findUserWithEmail', async (req, res) => {
 app.delete('/deleteById/:id', async (req, res) => {
   const id = req.params.id
 
-  const deleteUser = await addUser.deleteOne({ _id: id })
+  const deleteUser = await User.deleteOne({ _id: id })
   console.log("User Deleted ", deleteUser)
 
   res.send("User Deleted")
@@ -48,6 +48,8 @@ connectDB().then(() => {
   console.log(err);
 });
 
-module.exports = app;
+app.listen(process.env.PORT, () => {
+  console.log('Server is running on port 3000');
+})
 
 

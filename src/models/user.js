@@ -1,3 +1,5 @@
+// ✅ Final version of models/user.js
+
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
@@ -22,11 +24,9 @@ const userSchema = new Schema(
     {
         collection: 'users'
     }
-)
+);
 
-const addUser = mongoose.model('user', userSchema);
+// 👇 yahan model ka naam User rakho
+const User = mongoose.model('user', userSchema);
 
-module.exports = {
-    addUser
-};
-
+module.exports = User;
