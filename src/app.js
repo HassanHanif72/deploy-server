@@ -10,8 +10,8 @@ app.use(express.json());
 
 app.post('/signup', async (req, res) => {
   try {
-    const user = new User(req.body);  // new keyword zaroori hai
-    await user.save();                // await lagao taake save ho jaye
+    const user = new User(req.body);  
+    await user.save();                
     res.send("User Added Successfully");
   } catch (err) {
     console.error(err);
