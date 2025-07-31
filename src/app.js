@@ -1,0 +1,55 @@
+const { connectDB } = require('./config/database');
+const express = require('express');
+const { addUser } = require('./models/user');
+require('dotenv').config();
+
+const app = express();
+
+app.use(express.json());
+
+
+app.post('/signup', async (req, res) => {
+  const user = await addUser(req.body);
+  user.save();
+  res.send("User Added Successfully")
+})
+
+// FIND USER WITH EMAIL
+
+app.post('/findUserWithEmail', async (req, res) => {
+  const email = req.body.email;
+
+  const findByEmail = await addUser.find({ email: email })
+
+  if (findByEmail.length === 0) {
+    res.status(400).send("User not found!")
+  } else {
+    res.send("User found")
+  }
+})
+
+app.delete('/deleteById/:id', async (req, res) => {
+  const id = req.params.id
+
+  const deleteUser = await addUser.deleteOne({ _id: id })
+  console.log("User Deleted ", deleteUser)
+
+  res.send("User Deleted")
+
+})
+
+app.use('/', (req, res)=>{
+  res.send("Server Created");
+})
+
+connectDB().then(() => {
+  console.log('Successfully connected to the Database');
+}).catch((err) => {
+  console.log(err);
+});
+
+app.listen(process.env.PORT, () => {
+  console.log('Server is running on port 3000');
+})
+
+
